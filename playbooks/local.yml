@@ -1,0 +1,6 @@
+--- # LOCAL ACTION PLAYBOOK
+- hosts: 127.0.0.1
+  connection: local # bypass ssh
+  tasks:
+    - name: install telnet client
+      yum: pkg=telnet state=present

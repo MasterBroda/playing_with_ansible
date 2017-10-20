@@ -1,0 +1,28 @@
+--- # outline to actual
+- hosts: apacheweb
+  user: test
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: timestamp for when the playbook starts
+    raw: /usr/bin/date > /home/test/playbook_time.log
+  - name: install apache webserver
+    yum: pkg=httpd state=latest
+  - name: start the webservice
+    service: name=httpd state=restarted
+  - name: verify the web service is running
+    command: systemctl status httpd
+    register: result
+  - debug: var=result
+
+  - name: install client software - telnet
+    yum: pkg=telnet state=latest
+  - name: install client software = lynx
+    yum: pkg=lynx state=latest
+
+  - name: log all packages installed on the system
+    raw: yum list installed > /home/test/list_installed.log
+
+  - name: timestamp for when the playbook stops
+    raw: /usr/bin/date >> /home/test/playbook_time.log
+

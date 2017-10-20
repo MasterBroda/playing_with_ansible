@@ -1,0 +1,29 @@
+--- # my first playbook for ansible
+- hosts: all
+  user: test
+  become: yes
+  connection: ssh
+  gather_facts: no
+  vars:
+    playbook_version: 0.1b
+  vars_files:
+    - conf/copyright.yml   # - is needed as it's an external file
+    - conf/webdefaults.yml
+  vars_prompt:
+    - name: pkg_name
+      prompt: Install which package?
+  tasks:
+#    - name: install lynx browser
+#      action: yum name=lynx state=installed
+#    - name: check for telnet client
+#      action: yum name=telnet state=absent # absent only checks for presence or absence
+     - name: install httpd
+       action: yum name=httpd state=installed
+       async: 300
+       poll: 3
+       notify: restart httpd
+     - name: install lynx
+       action: yum name={{ pkg_name }} state=installed
+  handlers:
+     - name: restart httpd # notify and name of handler must match
+       action: service name=httpd state=restarted

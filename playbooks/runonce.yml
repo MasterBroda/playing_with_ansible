@@ -1,0 +1,12 @@
+--- # runonce playbook
+- hosts: all
+  user: test
+  connection: ssh
+  become: yes
+  gather_facts: no
+  tasks: 
+    - name: run uptime cmd and log it
+      raw: /usr/bin/uptime >> /home/test/uptime.log
+    - name: list /var dir and log it
+      raw: ls -al /var >> /home/test/dir.list
+      run_once: true

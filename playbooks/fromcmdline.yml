@@ -1,0 +1,10 @@
+--- # variables at cmd line passing example
+- hosts: '{{ host }}'
+  user: '{{ user }}'
+  connection: ssh
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: install something
+    yum: pkg={{ pkg }} state=installed
+

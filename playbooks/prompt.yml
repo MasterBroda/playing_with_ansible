@@ -1,0 +1,17 @@
+--- # PROMPT example playbook
+- hosts: apacheweb
+  user: test
+  become: yes
+  connection: ssh
+  gather_facts: no
+  vars:
+    playbook_version: 0.01b
+  vars_prompt:
+    - name: pkgtoinstall # name of package
+      prompt: which package to install?
+      default: telnet # in case you don't enter any
+      private: no # this will display it on console
+  tasks:
+    - name: install indicated package
+      yum: pkg={{ pkgtoinstall }} state=installed
+
